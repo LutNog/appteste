@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="login">Usuário:</label>
+        <input type="text" id="login" name="login" required><br><br>
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required><br><br>
+        <button type="submit">Entrar</button>
+    </form>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var login = document.getElementById("login").value;
+            var senha = document.getElementById("senha").value;
+            
+            // Enviar os dados de login para a API Flask via POST
+            fetch('/verificar-login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ login: login, senha: senha })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Se o login for bem-sucedido, redirecionar para a próxima página
+                    window.location.href = '/formulario';
+                } else {
+                    // Se o login falhar, exibir mensagem de erro
+                    alert("Login inválido");
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        });
+    </script>
+</body>
+</html>
